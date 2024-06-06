@@ -1,0 +1,71 @@
+<div>
+    <label for="countryList" class="form-label">Country</label>
+    <div class="input-group mb-2">
+        <input class="form-control" list="countryListOptions" id="countryList" placeholder="Type to search..."
+            [(ngModel)]="selectedCountry" type="text" aria-describedby="button-addon2" #countryName
+            (change)="this.selectedCity = undefined;">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+            (click)="countryName.value = ''; selectedCountry = ''; selectedCity = undefined;">X</button>
+    </div>
+    <datalist id="countryListOptions">
+        @for (item of countries; track $index) {
+        <option>{{item}}</option>
+        }
+    </datalist>
+</div>
+<div class="w-25">
+    <label for="selectCity" class="form-label">City</label>
+    <select [(ngModel)]="selectedCity" class="form-select" id="selectCity" aria-placeholder="Select a city ..."
+        [disabled]="!countries.includes(selectedCountry)">
+        @for (item of filteredCities(); track $index) {
+        <option [ngValue]="item" (click)="this.selectedCity = item">{{item.city}}</option>
+        }
+    </select>
+    @if (this.selectedCity) {
+    <button type="button" class="btn btn-success mt-3" (click)="showWeather()">Show weather</button>
+    }
+</div>
+@if (this.forecasted) {
+<p class="fs-3 mb-0">Forecast for {{shownCity}}, {{shownCountry}}.</p>
+<div class="d-flex">
+    @for (day of days; track day; let i = $index) {
+    <div class="card text-center mt-3">
+        @for (item of this.forecasted.slice(i*8, (i+1)*8); track item; let j = $index) {
+        <div class="card-header">
+            {{item.dt | date: 'dd-MM-yyyy'}}
+            <p class="mb-0">Weather at {{item.dt | date: 'HH:mm'}}</p>
+        </div>
+        <img [src]="item.weather.icon.url" alt="">
+        <div class="card-body">
+            <h5 class="card-title">Temperature {{item.weather.temp.cur}} &deg;C</h5>
+            <h6 class="card-title mb-2">Feels like {{item.weather.feelsLike.cur}} &deg;C</h6>
+            <div class="accordion" [id]="'accordion'+ i + j">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            [attr.data-bs-target]="'#collapse' + i + j" aria-expanded="false"
+                            [attr.aria-controls]="'collapse' + i + j">
+                            Details
+                        </button>
+                    </h2>
+                    <div [id]="'collapse' + i + j" class="accordion-collapse collapse"
+                        [attr.data-bs-parent]="'#accordion' + i + j">
+                        <div class="accordion-body">
+                            <h6 class="card-title">Sunrise at {{item.astronomical.sunrise | date: 'HH:mm'}}
+                            </h6>
+                            <h6 class="card-title">Sunset at {{item.astronomical.sunset | date: 'HH:mm'}}
+                            </h6>
+                            <h6 class="card-title">Humidity {{item.weather.humidity}}%</h6>
+                            <h6 class="card-title">Expect {{item.weather.description | titlecase}} </h6>
+                            <h6 class="card-text">Wind speed {{item.weather.wind.speed}} m/s</h6>
+                            <p class="card-text">Cloudines {{item.weather.clouds}}%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>
+}

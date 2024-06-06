@@ -1,0 +1,34 @@
+<p class="fs-3">Welcome! Get ready to conquer your day with the most accurate weather forecast.</p>
+<div class="d-flex gap-3">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Weather Admin</h5>
+            <p class="card-text">Check current weather conditions by city and air pollution data.</p>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-primary" [routerLink]="['admin']">Admin now</a>
+        </div>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Days Admin</h5>
+            <p class="card-text">Mock up to show how weekly historical data would work if the API was available (shows
+                data from a pseudo random city when changing the date)</p>
+        </div>
+        <div class="card-footer">
+            <a [routerLink]="['days']" class="btn btn-info">Mock</a>
+        </div>
+
+    </div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">City Forecast</h5>
+            <p class="card-text">Shows the expected weather conditions taking into account the selected city.</p>
+        </div>
+        <div class="card-footer">
+            <a [routerLink]="['forecast']" class="btn btn-warning">See the future</a>
+        </div>
+    </div>
+</div>

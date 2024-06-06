@@ -1,0 +1,64 @@
+<div>
+    <label for="countryList" class="form-label">Country</label>
+    <div class="input-group mb-2">
+        <input class="form-control" list="countryListOptions" id="countryList" placeholder="Type to search..."
+            [(ngModel)]="selectedCountry" type="text" aria-describedby="button-addon2" #countryName
+            (change)="this.selectedCity = undefined;">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+            (click)="countryName.value = ''; selectedCountry = ''; selectedCity = undefined;">X</button>
+    </div>
+    <datalist id="countryListOptions">
+        @for (item of countries; track $index) {
+        <option>{{item}}</option>
+        }
+    </datalist>
+</div>
+<div class="w-25">
+    <label for="selectCity" class="form-label">City</label>
+    <select [(ngModel)]="selectedCity" class="form-select" id="selectCity" aria-placeholder="Select a city ..."
+        [disabled]="!countries.includes(selectedCountry)">
+        @for (item of filteredCities(); track $index) {
+        <option [ngValue]="item" (click)="this.selectedCity = item">{{item.city}}</option>
+        }
+    </select>
+    @if (this.selectedCity) {
+    <button type="button" class="btn btn-success mt-3" (click)="showWeather()">Show weather</button>
+    }
+</div>
+@if (this.currentWeather) {
+<div class="card text-center mt-3">
+    <div class="card-header">
+        Weather in {{shownCity}}, {{shownCountry}} at {{this.currentWeather.dt | date: 'dd/mm/yyyy HH:mm'}}
+    </div>
+    <div class="card-body">
+        <img [src]="this.currentWeather.weather.icon.url" alt="">
+        <h3 class="card-title">Temperature {{this.currentWeather.weather.temp.cur}} &deg;C</h3>
+        <h4 class="card-title mb-2">Feels like {{this.currentWeather.weather.feelsLike.cur}} &deg;C</h4>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Details
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <h5 class="card-title">Sunrise at {{this.currentWeather.astronomical.sunrise | date: 'HH:mm'}}
+                        </h5>
+                        <h5 class="card-title">Sunset at {{this.currentWeather.astronomical.sunset | date: 'HH:mm'}}
+                        </h5>
+                        <h6 class="card-title">Humidity {{this.currentWeather.weather.humidity}}%</h6>
+                        <h6 class="card-title">Expect {{this.currentWeather.weather.description | titlecase}} </h6>
+                        <h6 class="card-text">Wind speed {{this.currentWeather.weather.wind.speed}} m/s</h6>
+                        <p class="card-text">Cloudines {{this.currentWeather.weather.clouds}}%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-body-secondary">
+        <a href="#" class="btn btn-primary">Back Home</a>
+    </div>
+</div>
+}

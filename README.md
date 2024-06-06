@@ -16,6 +16,9 @@ $ npm install
 ## Running the app
 
 In the Activity bar go to the `Run and Debug` option and execute the available option.
+
+In the Database created the data in the following [file](https://openweathermap.org/storage/app/media/cities_list.xlsx) should be transformed into a `.csv` and then imported, make sure the `lon` column is a double.
+
 Go to a browser and navigate to `http://localhost:4200/`.
 
 ## License
